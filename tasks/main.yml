@@ -1,16 +1,19 @@
 ---
 - name: Vector | install Vector distrib
+  become: true
   ansible.builtin.yum:
     name: "https://packages.timber.io/vector/{{ vector_version }}/vector-{{ vector_version }}-1.x86_64.rpm"
     state: present
   tags: vector
 - name: Vector | Create directory for Vector logs
+  become: true
   ansible.builtin.file:
     state: directory
     path: /var/lib/vector/local_logs
     mode: 0755
   tags: vector
 - name: Vector | Template config
+  become: true
   ansible.builtin.template:
     src: vector.yml.j2
     dest: /etc/vector/vector.yml
