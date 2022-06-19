@@ -1,10 +1,16 @@
 ---
-- name: Vector | install Vector distrib
+- name: Vector | install Vector distrib | CentOS
   become: true
   ansible.builtin.yum:
-    name: "https://packages.timber.io/vector/{{ vector_version }}/vector-{{ vector_version }}-1.x86_64.rpm"
+    name: "{{ vector_url }}"
     state: present
+  when: ansible_distribution == "CentOS"
   tags: vector
+- name: Vector | install Vector distrib | Ubuntu
+  become: true
+  ansible.builtin.apt:
+    deb: "{{ vector_deb }}"
+  when: ansible_distribution == "Ubuntu"
 - name: Vector | Create directory for Vector logs
   become: true
   ansible.builtin.file:
@@ -16,10 +22,11 @@
   become: true
   ansible.builtin.template:
     src: vector.yml.j2
-    dest: /etc/vector/vector.yml
+    dest: /etc/vector/vector.yaml
     mode: 0755
     owner: root
     group: root
+    validate: vector validate --no-environment --config-yaml %s
   tags: vector
 - name: Vector | create systemd unit
   become: true
@@ -36,4 +43,5 @@
     name: vector
     state: started
     daemon_reload: true
+  when: ansible_virtualization_type != "docker"
   tags: vector

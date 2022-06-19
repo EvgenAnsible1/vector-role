@@ -1,15 +1,15 @@
 galaxy_info:
   author: Evgeniy Smirnov
-  description: Vector install for homework
+  description: Lighthouse install for honework
   company: Netology student
-  role_name: vector_role
- 
+
   license: MIT
 
   min_ansible_version: 2.1
-
+  
+  role_name: vector
 
   galaxy_tags: [vector]
-  namespace: my_namespace
+
 dependencies: []
 
